@@ -1,0 +1,24 @@
+{
+  "originHash" : "d6eec054fedf702b5eea1814350d932355b264d5de77c565eedae5a4c78692ba",
+  "pins" : [
+    {
+      "identity" : "snapkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "state" : {
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "f9731bef175c3eea3a0ca960f1be78fcc2bc7853",
+        "version" : "0.57.1"
+      }
+    }
+  ],
+  "version" : 3
+}
