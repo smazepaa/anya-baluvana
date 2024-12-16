@@ -1,8 +1,9 @@
 import Foundation
+import Combine
 
 class Store {
     private var products: [UUID: Product] = [:]
-    private var currentOrder: [UUID: Int] = [:]
+    @Published var currentOrder: [UUID: Int] = [:] // Make it published
 
     func addProduct(product: Product) {
         products[product.id] = product
@@ -41,4 +42,51 @@ class Store {
     func getOrderQuantities() -> [UUID: Int] {
         return currentOrder
     }
+    
+    func getOrders() -> [(product: Product, quantity: Int)] {
+        return currentOrder.compactMap { (id, quantity) in
+            if let product = products[id] {
+                return (product, quantity)
+            }
+            return nil
+        }
+    }
+    
+    func getCurrentOrder() -> [(product: Product, quantity: Int)] {
+        return currentOrder.compactMap { id, quantity in
+            guard let product = products[id] else { return nil }
+            return (product, quantity)
+        }
+    }
+    
+    func updateOrderQuantity(productId: UUID, quantity: Int) {
+        if quantity == 0 {
+            currentOrder.removeValue(forKey: productId)
+        } else {
+            currentOrder[productId] = quantity
+        }
+    }
+    
+    func updateOrder(productId: UUID, newQuantity: Int) {
+        guard let product = products[productId] else { return }
+        let currentQuantity = currentOrder[productId] ?? 0
+        let delta = newQuantity - currentQuantity
+
+        // Adjust stock
+        if delta > 0 {
+            products[productId]?.stockLevel -= delta
+        } else {
+            products[productId]?.stockLevel += abs(delta)
+        }
+
+        currentOrder[productId] = newQuantity
+    }
+
+    func removeFromOrder(productId: UUID) {
+        if let quantity = currentOrder[productId] {
+            products[productId]?.stockLevel += quantity
+        }
+        currentOrder.removeValue(forKey: productId)
+    }
+
 }

@@ -39,6 +39,9 @@
 		A111EB3D2D0E75C40030553A /* Orders.csv in Resources */ = {isa = PBXBuildFile; fileRef = A111EB392D0E75C40030553A /* Orders.csv */; };
 		A111EB3F2D0E76980030553A /* ProductDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111EB3E2D0E76980030553A /* ProductDetailsView.swift */; };
 		A111EB402D0E76980030553A /* ProductDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A111EB3E2D0E76980030553A /* ProductDetailsView.swift */; };
+		E52C72232D10BC730088EF78 /* OrderItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52C72222D10BC730088EF78 /* OrderItemCell.swift */; };
+		E52C72242D10BC730088EF78 /* OrderItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52C72222D10BC730088EF78 /* OrderItemCell.swift */; };
+		E52C72292D10C7E10088EF78 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52C72282D10C7E10088EF78 /* OrderViewController.swift */; };
 		E5C11B9C2D10805A0084B106 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C11B9B2D10805A0084B106 /* UserView.swift */; };
 		E5C11B9D2D10805A0084B106 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C11B9B2D10805A0084B106 /* UserView.swift */; };
 		E5C11BC72D1080E90084B106 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C11BC62D1080E90084B106 /* User.swift */; };
@@ -91,6 +94,8 @@
 		A111EB382D0E75C40030553A /* Products.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Products.csv; sourceTree = "<group>"; };
 		A111EB392D0E75C40030553A /* Orders.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Orders.csv; sourceTree = "<group>"; };
 		A111EB3E2D0E76980030553A /* ProductDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsView.swift; sourceTree = "<group>"; };
+		E52C72222D10BC730088EF78 /* OrderItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderItemCell.swift; sourceTree = "<group>"; };
+		E52C72282D10C7E10088EF78 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		E5C11B9B2D10805A0084B106 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		E5C11BC62D1080E90084B106 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		E5C11BCB2D109A0B0084B106 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
@@ -199,6 +204,7 @@
 				A111EB322D0E69B50030553A /* ProductView.swift */,
 				A111EB3E2D0E76980030553A /* ProductDetailsView.swift */,
 				E5C11B9B2D10805A0084B106 /* UserView.swift */,
+				E52C72222D10BC730088EF78 /* OrderItemCell.swift */,
 			);
 			path = Vew;
 			sourceTree = "<group>";
@@ -227,6 +233,7 @@
 				A111EB352D0E71880030553A /* ProductDetailsViewController.swift */,
 				A111EAE42D0E4BBB0030553A /* ProductViewController.swift */,
 				E5C11BCB2D109A0B0084B106 /* UserViewController.swift */,
+				E52C72282D10C7E10088EF78 /* OrderViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -377,12 +384,14 @@
 				A111EB2D2D0E58960030553A /* InventoryViewModel.swift in Sources */,
 				E5C11BCC2D109A0B0084B106 /* UserViewController.swift in Sources */,
 				A111EAE52D0E4BBB0030553A /* ProductViewController.swift in Sources */,
+				E52C72232D10BC730088EF78 /* OrderItemCell.swift in Sources */,
 				A111EB272D0E555F0030553A /* ProductDBService.swift in Sources */,
 				A111EB362D0E71880030553A /* ProductDetailsViewController.swift in Sources */,
 				A111EB302D0E68B40030553A /* LoadingView.swift in Sources */,
 				A111EB332D0E69B50030553A /* ProductView.swift in Sources */,
 				A111EAE12D0E4BBB0030553A /* AppDelegate.swift in Sources */,
 				A111EB1D2D0E50260030553A /* Product.swift in Sources */,
+				E52C72292D10C7E10088EF78 /* OrderViewController.swift in Sources */,
 				E5C11BC82D1080E90084B106 /* User.swift in Sources */,
 				A111EB202D0E50570030553A /* Store.swift in Sources */,
 				A111EB2A2D0E57940030553A /* OrderDBService.swift in Sources */,
@@ -405,6 +414,7 @@
 				A111EB1E2D0E50260030553A /* Product.swift in Sources */,
 				A111EB282D0E555F0030553A /* ProductDBService.swift in Sources */,
 				A111EB402D0E76980030553A /* ProductDetailsView.swift in Sources */,
+				E52C72242D10BC730088EF78 /* OrderItemCell.swift in Sources */,
 				A111EB212D0E50570030553A /* Store.swift in Sources */,
 				E5C11BC72D1080E90084B106 /* User.swift in Sources */,
 				E5C11BD12D10A8E40084B106 /* UserViewModel.swift in Sources */,

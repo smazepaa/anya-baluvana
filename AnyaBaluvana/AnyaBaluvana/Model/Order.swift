@@ -26,4 +26,8 @@ class Order: Identifiable {
     private func calculateTotalPrice() {
         totalPrice = products.reduce(0) { $0 + $1.price }
     }
+
+    func getProductQuantity(product: Product) -> Int {
+        return products.filter { $0.id == product.id }.count
+    }
 }
