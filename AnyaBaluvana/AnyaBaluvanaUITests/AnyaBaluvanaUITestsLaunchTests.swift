@@ -2,7 +2,7 @@
 //  AnyaBaluvanaUITestsLaunchTests.swift
 //  AnyaBaluvanaUITests
 //
-//  Created by Sofiia Mazepa on 13.12.2024.
+//  Created by Yarrochka on 15.12.2024.
 //
 
 import XCTest
@@ -17,7 +17,6 @@ final class AnyaBaluvanaUITestsLaunchTests: XCTestCase {
         continueAfterFailure = false
     }
 
-    @MainActor
     func testLaunch() throws {
         let app = XCUIApplication()
         app.launch()

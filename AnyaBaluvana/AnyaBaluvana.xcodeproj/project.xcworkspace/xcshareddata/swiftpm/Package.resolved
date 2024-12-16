@@ -1,5 +1,4 @@
 {
-  "originHash" : "d6eec054fedf702b5eea1814350d932355b264d5de77c565eedae5a4c78692ba",
   "pins" : [
     {
       "identity" : "snapkit",
@@ -20,5 +19,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

@@ -2,7 +2,7 @@
 //  AnyaBaluvanaTests.swift
 //  AnyaBaluvanaTests
 //
-//  Created by Sofiia Mazepa on 13.12.2024.
+//  Created by Yarrochka on 15.12.2024.
 //
 
 import XCTest
