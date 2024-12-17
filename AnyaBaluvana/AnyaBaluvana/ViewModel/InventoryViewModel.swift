@@ -5,6 +5,10 @@ class InventoryViewModel {
     @Published private(set) var store: Store
     @Published var isLoading: Bool = false
     @Published private var orders: [UUID: Order] = [:]
+    
+    @Published var currentOrder: [(product: Product, quantity: Int)] = []
+    
+    private var cancellables = Set<AnyCancellable>()
 
     private let productService = ProductDBService()
     private let orderService = OrderDBService()
@@ -12,6 +16,18 @@ class InventoryViewModel {
     init() {
         self.store = Store()
         loadOrders()
+        bindCurrentOrder()
+    }
+    
+    private func bindCurrentOrder() {
+        store.$currentOrder
+            .map { currentOrder in
+                currentOrder.compactMap { id, quantity in
+                    guard let product = self.store.getProduct(productId: id) else { return nil }
+                    return (product: product, quantity: quantity)
+                }
+            }
+            .assign(to: &$currentOrder)
     }
 
     func fetchProducts() {
@@ -79,4 +95,31 @@ class InventoryViewModel {
         orders.removeValue(forKey: order.orderId)
         orderService.saveOrders(Array(orders.values))
     }
+    
+    func updateOrderQuantity(for productId: UUID, newQuantity: Int) {
+        guard let _ = store.getProduct(productId: productId) else { return }
+        store.updateOrder(productId: productId, newQuantity: newQuantity)
+        updateCurrentOrder()
+    }
+
+    func removeProductFromOrder(productId: UUID) {
+        store.removeFromOrder(productId: productId)
+        updateCurrentOrder()
+    }
+
+    private func updateCurrentOrder() {
+        currentOrder = store.getCurrentOrder()
+    }
+    
+    func getCurrentOrderTotal() -> Double {
+        let total = currentOrder.reduce(0.0) { sum, item in
+            sum + (item.product.price * Double(item.quantity))
+        }
+        return total
+    }
+
+    func clearCurrentOrder() {
+        currentOrder = []
+    }
+
 }
