@@ -23,11 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let ordersViewController = OrderViewController(viewModel: inventoryViewModel)
         let ordersNavigationController = UINavigationController(rootViewController: ordersViewController)
-        ordersNavigationController.tabBarItem = UITabBarItem(title: "Orders", image: UIImage(systemName: "list.bullet"), tag: 2)
+        ordersNavigationController.tabBarItem = UITabBarItem(title: "Orders", image: UIImage(systemName: "shippingbox"), tag: 2)
 
 
         let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [productsNavigationController, userNavigationController, ordersNavigationController]
+        tabBarController.viewControllers = [productsNavigationController, ordersNavigationController, userNavigationController]
         tabBarController.tabBar.isTranslucent = false
 
         window.rootViewController = tabBarController

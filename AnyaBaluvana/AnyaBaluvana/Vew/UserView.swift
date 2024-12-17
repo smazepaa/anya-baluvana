@@ -47,17 +47,19 @@ final class UserCell: UITableViewCell {
         return tableView
     }()
 
-    private let bottomContainer: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
-        view.layer.cornerRadius = 10
-        return view
+    private let bottomContainer: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
+        button.layer.cornerRadius = 10
+        button.contentHorizontalAlignment = .left
+        return button
     }()
 
     private let deliveryStatusLabel: UILabel = {
         let label = UILabel()
         label.text = "Become a courier"
         label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.textColor = .black
         return label
     }()
 
@@ -68,6 +70,15 @@ final class UserCell: UITableViewCell {
         label.textColor = .darkGray
         return label
     }()
+    
+    private let courierImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "person-biking")
+        imageView.tintColor = .systemRed
+        return imageView
+    }()
+
 
     private let menuItems: [(icon: String, title: String)] = [
         ("creditcard", "Payment"),
@@ -117,13 +128,15 @@ final class UserCell: UITableViewCell {
         contentView.addSubview(bottomContainer)
         bottomContainer.addSubview(deliveryStatusLabel)
         bottomContainer.addSubview(deliveryDescriptionLabel)
+        bottomContainer.addSubview(courierImageView)
+        
+        bottomContainer.addTarget(self, action: #selector(becomeCourierTapped), for: .touchUpInside)
     }
 
 
     private func setupLayout() {
         topContainer.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(10)
-            $0.left.right.equalToSuperview().inset(10)
             $0.height.equalTo(100)
         }
 
@@ -136,7 +149,7 @@ final class UserCell: UITableViewCell {
         nameLabel.snp.makeConstraints {
             $0.leading.equalTo(imagePlaceHolder.snp.trailing).offset(15)
             $0.top.equalTo(imagePlaceHolder.snp.top).offset(15)
-            $0.trailing.equalToSuperview().inset(10)
+            $0.trailing.lessThanOrEqualToSuperview().inset(10)
         }
 
         phoneLabel.snp.makeConstraints {
@@ -151,8 +164,7 @@ final class UserCell: UITableViewCell {
 
         menuTableView.snp.makeConstraints {
             $0.top.equalTo(topContainer.snp.bottom).offset(15)
-            $0.left.equalToSuperview().inset(10)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
             $0.height.equalTo(menuItems.count * 50)
         }
 
@@ -165,18 +177,45 @@ final class UserCell: UITableViewCell {
 
         deliveryStatusLabel.snp.makeConstraints {
             $0.top.leading.equalToSuperview().inset(20)
+            $0.trailing.lessThanOrEqualTo(courierImageView.snp.leading).offset(-10)
         }
 
         deliveryDescriptionLabel.snp.makeConstraints {
             $0.top.equalTo(deliveryStatusLabel.snp.bottom).offset(5)
             $0.leading.equalTo(deliveryStatusLabel)
+            $0.trailing.lessThanOrEqualTo(courierImageView.snp.leading).offset(-10)
+        }
+
+        courierImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(20)
+            $0.width.height.equalTo(40)
         }
     }
+
 
     var onEditPhoneTapped: (() -> Void)?
 
     @objc private func editPhoneTapped() {
         onEditPhoneTapped?()
+    }
+    
+    var onBecomeCourierTapped: (() -> Void)?
+
+    @objc private func becomeCourierTapped() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.bottomContainer.backgroundColor = UIColor.systemRed.withAlphaComponent(0.15)
+        }) { _ in
+            UIView.animate(withDuration: 0.2) {
+                self.bottomContainer.backgroundColor = UIColor.systemRed.withAlphaComponent(0.1)
+            }
+        }
+        
+        if let url = URL(string: "https://www.youtube.com/watch?v=dQw4w9WgXcQ") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+
+        onBecomeCourierTapped?()
     }
 
     func setupCell(with user: User) {
