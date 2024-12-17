@@ -39,7 +39,7 @@ final class ProductDetailsCell: UICollectionViewCell {
 
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         label.textColor = .systemOrange
         label.textAlignment = .right
         return label
@@ -55,9 +55,9 @@ final class ProductDetailsCell: UICollectionViewCell {
 
     private let addButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Add +", for: .normal)
+        button.setTitle("Add in order +", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemPink
+        button.backgroundColor = .clear
         button.layer.cornerRadius = 8
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
         button.isEnabled = false
@@ -109,7 +109,7 @@ final class ProductDetailsCell: UICollectionViewCell {
         productImageView.snp.makeConstraints {
             $0.top.equalTo(containerView.snp.top).offset(16)
             $0.centerX.equalTo(containerView)
-            $0.width.height.equalTo(180)
+            $0.width.height.equalTo(200)
         }
 
         nameLabel.snp.makeConstraints {
@@ -119,25 +119,24 @@ final class ProductDetailsCell: UICollectionViewCell {
 
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(nameLabel.snp.bottom).offset(8)
-            $0.leading.trailing.equalTo(containerView).inset(16)
-        }
-
-        priceLabel.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(12)
-            $0.trailing.equalTo(containerView.snp.trailing).offset(-16)
+            $0.leading.trailing.equalTo(containerView).inset(20)
         }
 
         stockLabel.snp.makeConstraints {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(12)
-            $0.leading.equalTo(containerView.snp.leading).offset(16)
+            $0.leading.equalTo(containerView.snp.leading).offset(20)
+        }
+
+        priceLabel.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(9)
+            $0.trailing.equalTo(containerView).inset(20)
         }
 
         addButton.snp.makeConstraints {
-            $0.top.equalTo(priceLabel.snp.bottom).offset(16)
+            $0.top.equalTo(priceLabel.snp.bottom).offset(20)
             $0.centerX.equalTo(containerView)
             $0.width.equalTo(containerView.snp.width).multipliedBy(0.6)
-            $0.height.equalTo(40)
-            $0.bottom.equalTo(containerView.snp.bottom).offset(-16)
+            $0.height.equalTo(35)
         }
     }
 

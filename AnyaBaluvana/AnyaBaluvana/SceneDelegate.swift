@@ -5,8 +5,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
@@ -25,10 +24,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let ordersNavigationController = UINavigationController(rootViewController: ordersViewController)
         ordersNavigationController.tabBarItem = UITabBarItem(title: "Orders", image: UIImage(systemName: "shippingbox"), tag: 2)
 
-
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [productsNavigationController, ordersNavigationController, userNavigationController]
+        
         tabBarController.tabBar.isTranslucent = false
+        tabBarController.tabBar.backgroundColor = .white
 
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
