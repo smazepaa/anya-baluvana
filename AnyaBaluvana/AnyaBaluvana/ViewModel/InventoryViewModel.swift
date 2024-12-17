@@ -118,4 +118,8 @@ class InventoryViewModel {
         return total
     }
 
+    func clearCurrentOrder() {
+        currentOrder = []
+    }
+
 }

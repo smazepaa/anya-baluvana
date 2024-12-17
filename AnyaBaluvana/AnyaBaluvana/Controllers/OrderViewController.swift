@@ -52,14 +52,19 @@ final class OrderViewController: UIViewController {
         totalAmountLabel.font = .systemFont(ofSize: 18, weight: .bold)
         totalAmountLabel.textAlignment = .right
 
-        let totalAmount = calculateTotalAmount()
-        totalAmountLabel.text = "Total: \(String(format: "%.2f", totalAmount)) ₴"
+        if currentOrder.isEmpty {
+            totalAmountLabel.text = ""
+            footerView.frame.size.height = 0
+        } else {
+            let totalAmount = calculateTotalAmount()
+            totalAmountLabel.text = "Total: \(String(format: "%.2f", totalAmount)) ₴"
+            footerView.frame.size.height = 50
+        }
 
         footerView.addSubview(totalAmountLabel)
         totalAmountLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)
         }
-        footerView.frame.size.height = 50
 
         tableView.tableFooterView = footerView
     }
@@ -86,6 +91,7 @@ final class OrderViewController: UIViewController {
         footerView.addSubview(addressTextField)
         footerView.addSubview(swipeToConfirmLabel)
 
+        paymentSegmentedControl.selectedSegmentIndex = 0
         paymentSegmentedControl.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
@@ -135,19 +141,35 @@ final class OrderViewController: UIViewController {
     }
 
     @objc private func confirmOrder() {
+        guard !currentOrder.isEmpty else {
+            showAlert(title: "Empty Order", message: "Your order is empty. Please add items before confirming.")
+            return
+        }
+
+        guard let address = addressTextField.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
+            showAlert(title: "Invalid Address", message: "Please enter or select a delivery address.")
+            return
+        }
+
         let total = calculateTotalAmount()
         let paymentMethod = paymentSegmentedControl.selectedSegmentIndex == 0 ? "Cash" : "Card"
-        let address = addressTextField.text ?? "Map Selected Address"
 
         let message = """
-        Total: \(total) ₴
+        Total: \(String(format: "%.2f", total)) ₴
         Payment: \(paymentMethod)
         Address: \(address)
         """
-        
-        let alert = UIAlertController(title: "Order Confirmed",
-                                      message: "We will reach out to you in a minute!\n\n\(message)",
-                                      preferredStyle: .alert)
+
+        showAlert(title: "Order Confirmed", message: "We will reach out to you in a minute!\n\n\(message)")
+
+        currentOrder.removeAll()
+        viewModel.clearCurrentOrder()
+        tableView.reloadData()
+        updateTableFooter()
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
@@ -215,6 +237,11 @@ final class OrderViewController: UIViewController {
 
 extension OrderViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if currentOrder.isEmpty {
+            tableView.setEmptyMessage("You don't have a current order.")
+        } else {
+            tableView.restore()
+        }
         return currentOrder.count
     }
 
@@ -244,5 +271,24 @@ extension OrderViewController: MKMapViewDelegate {
         }
 
         return annotationView
+    }
+}
+
+extension UITableView {
+    func setEmptyMessage(_ message: String) {
+        let messageLabel = UILabel()
+        messageLabel.text = message
+        messageLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        messageLabel.textColor = .gray
+        messageLabel.textAlignment = .center
+        messageLabel.sizeToFit()
+
+        self.backgroundView = messageLabel
+        self.separatorStyle = .none
+    }
+
+    func restore() {
+        self.backgroundView = nil
+        self.separatorStyle = .singleLine
     }
 }
