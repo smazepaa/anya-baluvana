@@ -110,5 +110,12 @@ class InventoryViewModel {
     private func updateCurrentOrder() {
         currentOrder = store.getCurrentOrder()
     }
+    
+    func getCurrentOrderTotal() -> Double {
+        let total = currentOrder.reduce(0.0) { sum, item in
+            sum + (item.product.price * Double(item.quantity))
+        }
+        return total
+    }
 
 }
