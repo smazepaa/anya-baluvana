@@ -4,7 +4,7 @@ import Combine
 import MapKit
 
 final class OrderViewController: UIViewController {
-
+    
     private let tableView = UITableView()
     private let footerView = UIView()
     private let totalAmountLabel = UILabel()
@@ -16,30 +16,30 @@ final class OrderViewController: UIViewController {
     private var viewModel: InventoryViewModel
     private var cancellables = Set<AnyCancellable>()
     private var currentOrder: [(product: Product, quantity: Int)] = []
-
+    
     init(viewModel: InventoryViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Current Order"
-
+        
         setupTableView()
         setupFooter()
         bindViewModel()
         
     }
-
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(OrderItemCell.self, forCellReuseIdentifier: OrderItemCell.identifier)
         tableView.dataSource = self
-
+        
         tableView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().inset(350)
@@ -51,7 +51,7 @@ final class OrderViewController: UIViewController {
         let footerView = UIView()
         totalAmountLabel.font = .systemFont(ofSize: 18, weight: .bold)
         totalAmountLabel.textAlignment = .right
-
+        
         if currentOrder.isEmpty {
             totalAmountLabel.text = ""
             footerView.frame.size.height = 0
@@ -60,15 +60,15 @@ final class OrderViewController: UIViewController {
             totalAmountLabel.text = "Total: \(String(format: "%.2f", totalAmount)) ₴"
             footerView.frame.size.height = 50
         }
-
+        
         footerView.addSubview(totalAmountLabel)
         totalAmountLabel.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(16)
         }
-
+        
         tableView.tableFooterView = footerView
     }
-
+    
     private func createTotalLabel() -> UIView {
         let totalView = UIView()
         totalAmountLabel.font = .systemFont(ofSize: 18, weight: .bold)
@@ -79,44 +79,44 @@ final class OrderViewController: UIViewController {
         totalAmountLabel.snp.makeConstraints { $0.edges.equalToSuperview().inset(16) }
         return totalView
     }
-
+    
     private func setupFooter() {
         view.addSubview(footerView)
         footerView.backgroundColor = .white
         footerView.layer.borderColor = UIColor.lightGray.cgColor
         footerView.layer.borderWidth = 1
-
+        
         footerView.addSubview(paymentSegmentedControl)
         footerView.addSubview(mapView)
         footerView.addSubview(addressTextField)
         footerView.addSubview(swipeToConfirmLabel)
-
+        
         paymentSegmentedControl.selectedSegmentIndex = 0
         paymentSegmentedControl.snp.makeConstraints {
             $0.top.equalToSuperview().offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-
+        
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
         mapView.addGestureRecognizer(longPressGesture)
-
+        
         mapView.layer.cornerRadius = 8
         mapView.delegate = self
         mapView.delegate = self
-
+        
         mapView.snp.makeConstraints {
             $0.top.equalTo(paymentSegmentedControl.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(180)
         }
-
+        
         addressTextField.placeholder = "Enter delivery address manually"
         addressTextField.borderStyle = .roundedRect
         addressTextField.snp.makeConstraints {
             $0.top.equalTo(mapView.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
         }
-
+        
         let confirmButton = UIButton(type: .system)
         confirmButton.setTitle("Confirm Order", for: .normal)
         confirmButton.titleLabel?.font = .boldSystemFont(ofSize: 18)
@@ -124,56 +124,56 @@ final class OrderViewController: UIViewController {
         confirmButton.setTitleColor(.white, for: .normal)
         confirmButton.layer.cornerRadius = 8
         confirmButton.addTarget(self, action: #selector(confirmOrder), for: .touchUpInside)
-
+        
         footerView.addSubview(confirmButton)
-
+        
         confirmButton.snp.makeConstraints {
             $0.top.equalTo(addressTextField.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(16)
             $0.height.equalTo(50)
             $0.bottom.equalToSuperview().inset(16)
         }
-
+        
         footerView.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
             make.height.equalTo(400)
         }
     }
-
+    
     @objc private func confirmOrder() {
         guard !currentOrder.isEmpty else {
             showAlert(title: "Empty Order", message: "Your order is empty. Please add items before confirming.")
             return
         }
-
+        
         guard let address = addressTextField.text, !address.trimmingCharacters(in: .whitespaces).isEmpty else {
             showAlert(title: "Invalid Address", message: "Please enter or select a delivery address.")
             return
         }
-
+        
         let total = calculateTotalAmount()
         let paymentMethod = paymentSegmentedControl.selectedSegmentIndex == 0 ? "Cash" : "Card"
-
+        
         let message = """
         Total: \(String(format: "%.2f", total)) ₴
         Payment: \(paymentMethod)
         Address: \(address)
         """
-
+        
         showAlert(title: "Order Confirmed", message: "We will reach out to you in a minute!\n\n\(message)")
-
+        
         currentOrder.removeAll()
         viewModel.clearCurrentOrder()
         tableView.reloadData()
         updateTableFooter()
     }
-
+    
     private func showAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
-
+    
     private func bindViewModel() {
         viewModel.$currentOrder
             .sink { [weak self] currentOrder in
@@ -183,33 +183,33 @@ final class OrderViewController: UIViewController {
             }
             .store(in: &cancellables)
     }
-
+    
     @objc private func handleMapTap(_ gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             let location = gesture.location(in: mapView)
             let coordinate = mapView.convert(location, toCoordinateFrom: mapView)
-
+            
             mapView.removeAnnotations(mapView.annotations)
-
+            
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             annotation.title = "Selected Location"
             mapView.addAnnotation(annotation)
-
+            
             reverseGeocode(coordinate: coordinate)
         }
     }
-
+    
     private func reverseGeocode(coordinate: CLLocationCoordinate2D) {
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-
+        
         geocoder.reverseGeocodeLocation(location) { [weak self] (placemarks, error) in
             if let error = error {
                 print("Reverse geocoding failed: \(error.localizedDescription)")
                 self?.addressTextField.text = "Unable to find address"
                 return
             }
-
+            
             if let placemark = placemarks?.first {
                 let street = placemark.thoroughfare ?? ""
                 let number = placemark.subThoroughfare ?? ""
@@ -226,13 +226,13 @@ final class OrderViewController: UIViewController {
             }
         }
     }
-
+    
     private func calculateTotalAmount() -> Double {
         return currentOrder.reduce(0.0) { total, item in
             total + (item.product.price * Double(item.quantity))
         }
     }
-
+    
 }
 
 extension OrderViewController: UITableViewDataSource {
@@ -244,7 +244,7 @@ extension OrderViewController: UITableViewDataSource {
         }
         return currentOrder.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: OrderItemCell.identifier, for: indexPath) as? OrderItemCell else {
             return UITableViewCell()
@@ -255,13 +255,24 @@ extension OrderViewController: UITableViewDataSource {
         }
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let orderItem = currentOrder[indexPath.row]
+            viewModel.removeProductFromOrder(productId: orderItem.product.id)
+        }
+    }
 }
 
 extension OrderViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let identifier = "DraggablePin"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
-
+        
         if annotationView == nil {
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.isDraggable = true
@@ -269,7 +280,7 @@ extension OrderViewController: MKMapViewDelegate {
         } else {
             annotationView?.annotation = annotation
         }
-
+        
         return annotationView
     }
 }
@@ -282,11 +293,11 @@ extension UITableView {
         messageLabel.textColor = .gray
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()
-
+        
         self.backgroundView = messageLabel
         self.separatorStyle = .none
     }
-
+    
     func restore() {
         self.backgroundView = nil
         self.separatorStyle = .singleLine
