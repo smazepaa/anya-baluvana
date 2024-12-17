@@ -74,11 +74,10 @@ final class UserCell: UITableViewCell {
     private let courierImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "person-biking")
+        imageView.image = UIImage(named: "man")
         imageView.tintColor = .systemRed
         return imageView
     }()
-
 
     private let menuItems: [(icon: String, title: String)] = [
         ("creditcard", "Payment"),
@@ -189,7 +188,7 @@ final class UserCell: UITableViewCell {
         courierImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.height.equalTo(40)
+            $0.width.height.equalTo(60)
         }
     }
 

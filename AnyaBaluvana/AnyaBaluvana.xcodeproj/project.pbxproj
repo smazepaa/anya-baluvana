@@ -50,6 +50,10 @@
 		E5C11BD02D10A8E40084B106 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C11BCF2D10A8E40084B106 /* UserViewModel.swift */; };
 		E5C11BD12D10A8E40084B106 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C11BCF2D10A8E40084B106 /* UserViewModel.swift */; };
 		E5C11BD32D10A91D0084B106 /* User.csv in Resources */ = {isa = PBXBuildFile; fileRef = E5C11BD22D10A9110084B106 /* User.csv */; };
+		E5E368F62D11E5BC00AA9D3D /* OrderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E368F52D11E5BC00AA9D3D /* OrderFooterView.swift */; };
+		E5E368F72D11E5BC00AA9D3D /* OrderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E368F52D11E5BC00AA9D3D /* OrderFooterView.swift */; };
+		E5E368F92D11E5FD00AA9D3D /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E368F82D11E5FD00AA9D3D /* OrderListView.swift */; };
+		E5E368FA2D11E5FD00AA9D3D /* OrderListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E368F82D11E5FD00AA9D3D /* OrderListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +105,8 @@
 		E5C11BCB2D109A0B0084B106 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		E5C11BCF2D10A8E40084B106 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		E5C11BD22D10A9110084B106 /* User.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = User.csv; sourceTree = "<group>"; };
+		E5E368F52D11E5BC00AA9D3D /* OrderFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderFooterView.swift; sourceTree = "<group>"; };
+		E5E368F82D11E5FD00AA9D3D /* OrderListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +211,8 @@
 				A111EB3E2D0E76980030553A /* ProductDetailsView.swift */,
 				E5C11B9B2D10805A0084B106 /* UserView.swift */,
 				E52C72222D10BC730088EF78 /* OrderView.swift */,
+				E5E368F52D11E5BC00AA9D3D /* OrderFooterView.swift */,
+				E5E368F82D11E5FD00AA9D3D /* OrderListView.swift */,
 			);
 			path = Vew;
 			sourceTree = "<group>";
@@ -387,6 +395,7 @@
 				E52C72232D10BC730088EF78 /* OrderView.swift in Sources */,
 				A111EB272D0E555F0030553A /* ProductDBService.swift in Sources */,
 				A111EB362D0E71880030553A /* ProductDetailsViewController.swift in Sources */,
+				E5E368F62D11E5BC00AA9D3D /* OrderFooterView.swift in Sources */,
 				A111EB302D0E68B40030553A /* LoadingView.swift in Sources */,
 				A111EB332D0E69B50030553A /* ProductView.swift in Sources */,
 				A111EAE12D0E4BBB0030553A /* AppDelegate.swift in Sources */,
@@ -397,6 +406,7 @@
 				A111EB2A2D0E57940030553A /* OrderDBService.swift in Sources */,
 				A111EB3F2D0E76980030553A /* ProductDetailsView.swift in Sources */,
 				A111EB1A2D0E500B0030553A /* Order.swift in Sources */,
+				E5E368F92D11E5FD00AA9D3D /* OrderListView.swift in Sources */,
 				E5C11BD02D10A8E40084B106 /* UserViewModel.swift in Sources */,
 				A111EAE32D0E4BBB0030553A /* SceneDelegate.swift in Sources */,
 				E5C11B9D2D10805A0084B106 /* UserView.swift in Sources */,
@@ -408,11 +418,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E5C11B9C2D10805A0084B106 /* UserView.swift in Sources */,
+				E5E368FA2D11E5FD00AA9D3D /* OrderListView.swift in Sources */,
 				A111EB342D0E69B50030553A /* ProductView.swift in Sources */,
 				A111EB1B2D0E500B0030553A /* Order.swift in Sources */,
 				A111EAF82D0E4BC00030553A /* AnyaBaluvanaTests.swift in Sources */,
 				A111EB1E2D0E50260030553A /* Product.swift in Sources */,
 				A111EB282D0E555F0030553A /* ProductDBService.swift in Sources */,
+				E5E368F72D11E5BC00AA9D3D /* OrderFooterView.swift in Sources */,
 				A111EB402D0E76980030553A /* ProductDetailsView.swift in Sources */,
 				E52C72242D10BC730088EF78 /* OrderView.swift in Sources */,
 				A111EB212D0E50570030553A /* Store.swift in Sources */,
