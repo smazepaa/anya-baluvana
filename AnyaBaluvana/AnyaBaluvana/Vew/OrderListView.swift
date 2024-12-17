@@ -36,7 +36,6 @@ final class OrderListView: UIView {
     }
 
     private func setupTableFooter() {
-        // Footer container
         let footerView = UIView()
         footerView.backgroundColor = .white
         footerView.frame.size.height = 50
@@ -69,7 +68,6 @@ final class OrderListView: UIView {
         totalAmountLabel.text = "Total: \(String(format: "%.2f", total)) ₴"
     }
 
-    // MARK: - Empty State Handling
     func setEmptyMessage(_ message: String) {
         let messageLabel = UILabel()
         messageLabel.text = message
@@ -79,7 +77,7 @@ final class OrderListView: UIView {
         messageLabel.sizeToFit()
         tableView.backgroundView = messageLabel
         tableView.separatorStyle = .none
-        tableView.tableFooterView = nil // Remove footer when empty
+        tableView.tableFooterView = nil
     }
 
     func restore() {
@@ -114,7 +112,6 @@ extension OrderListView: UITableViewDataSource, UITableViewDelegate {
             let productId = order[indexPath.row].product.id
             onDeleteItem?(productId)
 
-            // Temporarily remove the item from local UI state to reflect deletion immediately
             order.remove(at: indexPath.row)
             updateTotalAmount()
             if order.isEmpty {

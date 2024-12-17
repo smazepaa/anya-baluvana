@@ -7,7 +7,6 @@ class Store {
     @Published var currentOrder: [UUID: Int] = [:]
     private let storeQueue = DispatchQueue(label: "com.store.queue")
     
-    // Операции записи - async
     func addProduct(product: Product) {
         storeQueue.async {
             self.products[product.id] = product
@@ -26,7 +25,6 @@ class Store {
         }
     }
     
-    // Операции чтения - sync
     func getProduct(productId: UUID) -> Product? {
         return storeQueue.sync {
             return products[productId]
@@ -45,7 +43,6 @@ class Store {
         }
     }
     
-    // Операции с заказом - async для изменений
     func addToOrder(productId: UUID) {
         storeQueue.async { [weak self] in
             guard let self = self,
@@ -60,7 +57,6 @@ class Store {
         }
     }
     
-    // Операции чтения заказа - sync
     func getOrderItems() -> [Product] {
         return storeQueue.sync {
             return currentOrder.compactMap { id, _ in products[id] }
@@ -93,7 +89,6 @@ class Store {
         }
     }
     
-    // Операции изменения заказа - async
     func updateOrderQuantity(productId: UUID, quantity: Int) {
         storeQueue.async { [weak self] in
             guard let self = self else { return }
@@ -110,7 +105,7 @@ class Store {
     func updateOrder(productId: UUID, newQuantity: Int) {
         storeQueue.async { [weak self] in
             guard let self = self,
-                  let product = self.products[productId] else { return }
+                  let _ = self.products[productId] else { return }
             
             let currentQuantity = self.currentOrder[productId] ?? 0
             let delta = newQuantity - currentQuantity
