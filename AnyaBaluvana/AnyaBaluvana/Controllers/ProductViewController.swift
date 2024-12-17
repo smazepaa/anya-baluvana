@@ -65,7 +65,9 @@ final class ProductsViewController: UIViewController {
             .store(in: &cancellables)
 
         viewModel.$store
-            .sink { [weak self] _ in
+            .combineLatest(viewModel.$isLoading)
+            .sink { [weak self] _, isLoading in
+                guard !isLoading else { return }
                 self?.collectionView.reloadData()
             }
             .store(in: &cancellables)

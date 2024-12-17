@@ -26,7 +26,7 @@ class LoadingView: UIView {
         )
 
         circleLayer.path = circlePath.cgPath
-        circleLayer.strokeColor = UIColor.red.cgColor
+        circleLayer.strokeColor = UIColor.systemPink.cgColor
         circleLayer.fillColor = UIColor.clear.cgColor
         circleLayer.lineWidth = 8
         circleLayer.lineCap = .round

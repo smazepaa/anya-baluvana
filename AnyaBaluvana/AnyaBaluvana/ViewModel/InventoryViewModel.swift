@@ -32,11 +32,18 @@ class InventoryViewModel {
 
     func fetchProducts() {
         isLoading = true
-        let products = self.productService.loadProducts()
-        for product in products {
-            self.store.addProduct(product: product)
+
+        DispatchQueue.global().async {
+            let products = self.productService.loadProducts()
+
+            DispatchQueue.main.async {
+                for product in products {
+                    self.store.addProduct(product: product)
+                }
+
+                self.isLoading = false
+            }
         }
-        self.isLoading = false
     }
 
     private func loadOrders() {
