@@ -126,6 +126,7 @@ class InventoryViewModel {
     }
 
     func clearCurrentOrder() {
+        store.currentOrder = [:]
         currentOrder = []
     }
 
