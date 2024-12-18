@@ -26,6 +26,9 @@ final class OrderViewController: UIViewController {
         orderListView.onDeleteItem = { [weak self] productId in
             self?.viewModel.removeProductFromOrder(productId: productId)
         }
+        orderListView.onQuantityChanged = { [weak self] productId, newQuantity in
+            self?.viewModel.updateOrderQuantity(for: productId, newQuantity: newQuantity)
+        }
     }
     
     private func setupLayout() {

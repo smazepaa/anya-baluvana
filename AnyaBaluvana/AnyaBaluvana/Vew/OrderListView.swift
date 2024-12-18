@@ -99,6 +99,9 @@ extension OrderListView: UITableViewDataSource, UITableViewDelegate {
         let orderItem = order[indexPath.row]
         cell.configure(with: orderItem.product, quantity: orderItem.quantity) { [weak self] newQuantity in
             self?.onQuantityChanged?(orderItem.product.id, newQuantity)
+            self?.order[indexPath.row].quantity = newQuantity
+            self?.updateTotalAmount()
+            tableView.reloadRows(at: [indexPath], with: .none)
         }
         return cell
     }
