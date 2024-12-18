@@ -8,6 +8,16 @@ final class ProductsViewController: UIViewController {
     private let viewModel: InventoryViewModel
     private let collectionView: UICollectionView
     private var cancellables = Set<AnyCancellable>()
+    
+    private let filterControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: ["A-Z", "Z-A", "Price ⬆️", "Price ⬇️"])
+        control.selectedSegmentIndex = 0
+        control.backgroundColor = .white
+        control.selectedSegmentTintColor = .systemPink
+        control.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        control.setTitleTextAttributes([.foregroundColor: UIColor.systemPink], for: .normal)
+        return control
+    }()
 
     init(viewModel: InventoryViewModel) {
         self.loadingView = LoadingView()
@@ -45,17 +55,28 @@ final class ProductsViewController: UIViewController {
         collectionView.delegate = self
         collectionView.backgroundColor = .white
 
+        view.addSubview(filterControl)
         view.addSubview(collectionView)
         view.addSubview(loadingView)
 
-        collectionView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        filterControl.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
+            $0.leading.trailing.equalToSuperview().inset(16)
+            $0.height.equalTo(32)
         }
+
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(filterControl.snp.bottom).offset(8)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+        
         loadingView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
 
         loadingView.isHidden = true
+        
+        filterControl.addTarget(self, action: #selector(filterChanged), for: .valueChanged)
     }
 
     private func setupViewModelPublishers() {
@@ -84,6 +105,26 @@ final class ProductsViewController: UIViewController {
             loadingView.stopAnimating()
         }
     }
+    
+    @objc private func filterChanged() {
+        let selectedIndex = filterControl.selectedSegmentIndex
+
+        switch selectedIndex {
+        case 0:
+            viewModel.sortProductsAlphabeticallyAsc()
+        case 1:
+            viewModel.sortProductsAlphabeticallyDesc()
+        case 2:
+            viewModel.sortProductsByPriceAsc()
+        case 3:
+            viewModel.sortProductsByPriceDesc()
+        default:
+            break
+        }
+
+        collectionView.reloadData()
+    }
+
 }
 
 extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -99,8 +140,7 @@ extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDe
             return UICollectionViewCell()
         }
 
-        let products = viewModel.store.getAllProducts()
-        let product = products[indexPath.row]
+        let product = viewModel.sortedProducts[indexPath.row]
         let imageName = product.name
         let image = UIImage(named: "\(imageName)") ?? UIImage(systemName: "photo")!
 
@@ -112,8 +152,7 @@ extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let products = viewModel.store.getAllProducts()
-        let selectedProduct = products[indexPath.row]
+        let selectedProduct = viewModel.sortedProducts[indexPath.row]
         let imageName = selectedProduct.name
         let image = UIImage(named: "\(imageName)") ?? UIImage(systemName: "photo")!
 
@@ -131,7 +170,7 @@ extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDe
         let store = viewModel.store
         store.addToOrder(productId: product.id)
 
-        if let index = viewModel.store.getAllProducts().firstIndex(where: { $0.id == product.id }) {
+        if let index = viewModel.sortedProducts.firstIndex(where: { $0.id == product.id }) {
             let indexPath = IndexPath(item: index, section: 0)
             collectionView.reloadItems(at: [indexPath])
         }

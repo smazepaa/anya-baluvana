@@ -3,7 +3,7 @@ import Combine
 
 class Store {
     private var products: [UUID: Product] = [:]
-    @Published var currentOrder: [UUID: Int] = [:] // Make it published
+    @Published var currentOrder: [UUID: Int] = [:]
 
     func addProduct(product: Product) {
         products[product.id] = product
@@ -68,11 +68,10 @@ class Store {
     }
     
     func updateOrder(productId: UUID, newQuantity: Int) {
-        guard let product = products[productId] else { return }
+        guard products[productId] != nil else { return }
         let currentQuantity = currentOrder[productId] ?? 0
         let delta = newQuantity - currentQuantity
 
-        // Adjust stock
         if delta > 0 {
             products[productId]?.stockLevel -= delta
         } else {
@@ -88,5 +87,4 @@ class Store {
         }
         currentOrder.removeValue(forKey: productId)
     }
-
 }
