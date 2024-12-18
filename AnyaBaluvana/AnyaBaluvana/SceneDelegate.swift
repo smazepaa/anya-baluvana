@@ -1,8 +1,7 @@
 import UIKit
-import Combine
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -19,7 +18,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userViewController = UserViewController(viewModel: UserViewModel())
         let userNavigationController = UINavigationController(rootViewController: userViewController)
         userNavigationController.tabBarItem = UITabBarItem(title: "User", image: UIImage(systemName: "person"), tag: 1)
-        
+
         let ordersViewController = OrderViewController(viewModel: inventoryViewModel)
         let ordersNavigationController = UINavigationController(rootViewController: ordersViewController)
         ordersNavigationController.tabBarItem = UITabBarItem(title: "Orders", image: UIImage(systemName: "shippingbox"), tag: 2)
@@ -32,7 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-
         self.window = window
     }
 }

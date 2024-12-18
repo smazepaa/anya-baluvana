@@ -73,7 +73,7 @@ final class UserCell: UITableViewCell {
     private let courierImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: "person-biking")
+        imageView.image = UIImage(named: "man")
         imageView.tintColor = .systemRed
         return imageView
     }()
@@ -185,7 +185,7 @@ final class UserCell: UITableViewCell {
         courierImageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(20)
-            $0.width.height.equalTo(40)
+            $0.width.height.equalTo(60)
         }
     }
 
@@ -275,75 +275,5 @@ class MenuCell: UITableViewCell {
             $0.leading.equalTo(iconImageView.snp.trailing).offset(15)
             $0.centerY.equalToSuperview()
         }
-    }
-}
-
-#if DEBUG
-
-import SwiftUI
-
-struct UserCell_Previews: PreviewProvider {
-
-    static func makeCell() -> UserCell {
-        let cell = UserCell()
-
-        let sampleUser = User(
-            id: 1,
-            name: "Hailey",
-            avatar: UIImage(named: "user3"),
-            deliveryAddress: "123 Street Name, City",
-            phoneNumber: "+380503394100"
-        )
-        cell.setupCell(with: sampleUser)
-        return cell
-    }
-
-    static var previews: some View {
-        Group {
-            makeCell()
-                .asPreview()
-                .previewLayout(.sizeThatFits)
-                .padding()
-        }
-    }
-}
-
-#endif
-
-extension UIView {
-    @available(iOS 13, *)
-    private struct Preview: UIViewRepresentable {
-        var view: UIView
-
-        func makeUIView(context: Context) -> UIView {
-            view
-        }
-
-        func updateUIView(_ view: UIView, context: Context) {
-        }
-    }
-
-    @available(iOS 13, *)
-    func asPreview() -> some View {
-        Preview(view: self)
-    }
-}
-
-extension UIViewController {
-    @available(iOS 13, *)
-    private struct Preview: UIViewControllerRepresentable {
-        var viewController: UIViewController
-
-        func makeUIViewController(context: Context) -> UIViewController {
-            viewController
-        }
-
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        }
-    }
-
-    @available(iOS 13, *)
-    func asPreview() -> some View {
-        Preview(viewController: self)
     }
 }

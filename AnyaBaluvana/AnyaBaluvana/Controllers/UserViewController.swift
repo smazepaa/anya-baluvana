@@ -8,25 +8,25 @@ final class UserViewController: UIViewController {
     private let loadingView: UIActivityIndicatorView
     private let tableView: UITableView
     private var cancellables = Set<AnyCancellable>()
-
+    
     init(viewModel: UserViewModel) {
         self.viewModel = viewModel
         self.loadingView = UIActivityIndicatorView(style: .large)
         self.tableView = UITableView(frame: .zero, style: .grouped)
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupView()
         setupViewModelPublishers()
     }
-
+    
     private func setupView() {
         tableView.register(UserCell.self, forCellReuseIdentifier: UserCell.identifier)
         tableView.dataSource = self
@@ -36,7 +36,7 @@ final class UserViewController: UIViewController {
         
         view.addSubview(tableView)
         view.addSubview(loadingView)
-
+        
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
@@ -64,7 +64,7 @@ final class UserViewController: UIViewController {
     private func showLoading(_ show: Bool) {
         loadingView.isHidden = !show
         tableView.isHidden = show
-
+        
         if show {
             loadingView.startAnimating()
         } else {

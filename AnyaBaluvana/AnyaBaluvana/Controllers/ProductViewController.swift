@@ -8,7 +8,7 @@ final class ProductsViewController: UIViewController {
     private let viewModel: InventoryViewModel
     private let collectionView: UICollectionView
     private var cancellables = Set<AnyCancellable>()
-    
+
     private let filterControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["A-Z", "Z-A", "Price ⬆️", "Price ⬇️"])
         control.selectedSegmentIndex = 0
@@ -69,13 +69,13 @@ final class ProductsViewController: UIViewController {
             $0.top.equalTo(filterControl.snp.bottom).offset(8)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-        
+
         loadingView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
 
         loadingView.isHidden = true
-        
+
         filterControl.addTarget(self, action: #selector(filterChanged), for: .valueChanged)
     }
 
@@ -105,7 +105,7 @@ final class ProductsViewController: UIViewController {
             loadingView.stopAnimating()
         }
     }
-    
+
     @objc private func filterChanged() {
         let selectedIndex = filterControl.selectedSegmentIndex
 
