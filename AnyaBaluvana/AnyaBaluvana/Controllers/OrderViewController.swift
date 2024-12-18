@@ -57,7 +57,7 @@ final class OrderViewController: UIViewController {
             footerView.frame.size.height = 0
         } else {
             let totalAmount = calculateTotalAmount()
-            totalAmountLabel.text = "Total: \(String(format: "%.2f", totalAmount)) ₴"
+            totalAmountLabel.text = "Total: \(String(format: "%.2f", totalAmount)) $"
             footerView.frame.size.height = 50
         }
 

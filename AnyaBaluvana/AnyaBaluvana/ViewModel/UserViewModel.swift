@@ -93,4 +93,3 @@ final class UserViewModel: ObservableObject {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
     }
 }
-
