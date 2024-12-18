@@ -104,7 +104,7 @@ class InventoryViewModel {
     }
     
     func updateOrderQuantity(for productId: UUID, newQuantity: Int) {
-        guard let _ = store.getProduct(productId: productId) else { return }
+        guard store.getProduct(productId: productId) != nil else { return }
         store.updateOrder(productId: productId, newQuantity: newQuantity)
         updateCurrentOrder()
     }

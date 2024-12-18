@@ -152,8 +152,7 @@ extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDe
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let products = viewModel.store.getAllProducts()
-        let selectedProduct = products[indexPath.row]
+        let selectedProduct = viewModel.sortedProducts[indexPath.row]
         let imageName = selectedProduct.name
         let image = UIImage(named: "\(imageName)") ?? UIImage(systemName: "photo")!
 
@@ -171,7 +170,7 @@ extension ProductsViewController: UICollectionViewDataSource, UICollectionViewDe
         let store = viewModel.store
         store.addToOrder(productId: product.id)
 
-        if let index = viewModel.store.getAllProducts().firstIndex(where: { $0.id == product.id }) {
+        if let index = viewModel.sortedProducts.firstIndex(where: { $0.id == product.id }) {
             let indexPath = IndexPath(item: index, section: 0)
             collectionView.reloadItems(at: [indexPath])
         }
