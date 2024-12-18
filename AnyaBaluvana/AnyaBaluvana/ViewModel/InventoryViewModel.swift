@@ -5,7 +5,7 @@ class InventoryViewModel {
     @Published private(set) var store: Store
     @Published var isLoading: Bool = false
     @Published private var orders: [UUID: Order] = [:]
-    
+    @Published var sortedProducts: [Product] = []
     @Published var currentOrder: [(product: Product, quantity: Int)] = []
     
     private var cancellables = Set<AnyCancellable>()
@@ -40,7 +40,7 @@ class InventoryViewModel {
                 for product in products {
                     self.store.addProduct(product: product)
                 }
-
+                self.sortedProducts = products
                 self.isLoading = false
             }
         }
@@ -129,4 +129,23 @@ class InventoryViewModel {
         currentOrder = []
     }
 
+    func sortProductsAlphabeticallyAsc() {
+        sortedProducts = store.getAllProducts().sorted {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+        }
+    }
+
+    func sortProductsAlphabeticallyDesc() {
+        sortedProducts = store.getAllProducts().sorted {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending
+        }
+    }
+
+    func sortProductsByPriceAsc() {
+        sortedProducts = store.getAllProducts().sorted { $0.price < $1.price }
+    }
+
+    func sortProductsByPriceDesc() {
+        sortedProducts = store.getAllProducts().sorted { $0.price > $1.price }
+    }
 }
