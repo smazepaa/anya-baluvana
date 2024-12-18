@@ -180,6 +180,7 @@ final class OrderViewController: UIViewController {
                 self?.currentOrder = currentOrder
                 self?.tableView.reloadData()
                 self?.updateTableFooter()
+                self?.footerView.isHidden = currentOrder.isEmpty
             }
             .store(in: &cancellables)
     }
