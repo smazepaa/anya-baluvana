@@ -39,7 +39,7 @@ final class OrderItemCell: UITableViewCell {
         quantityLabel.text = "\(quantity) ×"
         productNameLabel.text = product.name.uppercased()
         let totalPrice = product.price * Double(quantity)
-        priceLabel.text = "\(String(format: "$%.2f", totalPrice)) ₴"
+        priceLabel.text = "\(String(format: "%.2f", totalPrice)) $"
 
         stepper.value = Double(quantity)
         self.onQuantityChanged = onQuantityChanged

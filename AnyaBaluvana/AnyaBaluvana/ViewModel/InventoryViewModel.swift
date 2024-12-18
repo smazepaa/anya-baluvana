@@ -5,14 +5,14 @@ class InventoryViewModel {
     @Published private(set) var store: Store
     @Published var isLoading: Bool = false
     @Published private var orders: [UUID: Order] = [:]
-    
+    @Published var sortedProducts: [Product] = []
     @Published var currentOrder: [(product: Product, quantity: Int)] = []
     
     private var cancellables = Set<AnyCancellable>()
-    
+
     private let productService = ProductDBService()
     private let orderService = OrderDBService()
-    
+
     init() {
         self.store = Store()
         loadOrders()
@@ -29,31 +29,38 @@ class InventoryViewModel {
             }
             .assign(to: &$currentOrder)
     }
-    
+
     func fetchProducts() {
         isLoading = true
-        let products = self.productService.loadProducts()
-        for product in products {
-            self.store.addProduct(product: product)
+
+        DispatchQueue.global().async {
+            let products = self.productService.loadProducts()
+
+            DispatchQueue.main.async {
+                for product in products {
+                    self.store.addProduct(product: product)
+                }
+                self.sortedProducts = products
+                self.isLoading = false
+            }
         }
-        self.isLoading = false
     }
-    
+
     private func loadOrders() {
         orders = orderService.loadOrders()
     }
-    
+
     func addNewProduct(name: String, description: String, price: Double, stockLevel: Int) {
         let newProduct = Product(id: UUID(), name: name, description: description, price: price, stockLevel: stockLevel)
         store.addProduct(product: newProduct)
         productService.saveProducts(store.getAllProducts())
     }
-    
+
     func removeProductByID(id: UUID) {
         store.removeProduct(productId: id)
         productService.saveProducts(store.getAllProducts())
     }
-    
+
     func updateProductInformation(id: UUID, name: String?, description: String?, price: Double?, stockLevel: Int?) {
         guard let product = store.getProduct(productId: id) else { return }
         if let name = name { product.name = name }
@@ -63,11 +70,11 @@ class InventoryViewModel {
         store.updateProduct(product: product)
         productService.saveProducts(store.getAllProducts())
     }
-    
+
     func addToOrder(product: Product) {
         store.addToOrder(productId: product.id)
     }
-    
+
     func createOrder(productIDs: [UUID]) {
         let newOrder = Order()
         newOrder.products = productIDs.compactMap { store.getProduct(productId: $0) }
@@ -75,15 +82,15 @@ class InventoryViewModel {
         orders[newOrder.orderId] = newOrder
         orderService.saveOrders(Array(orders.values))
     }
-    
+
     func addProductToOrder(order: Order, productID: UUID, quantity: Int) -> Bool {
         guard let product = store.getProduct(productId: productID) else { return false }
         guard product.stockLevel >= quantity else { return false }
-        
+
         order.addProduct(product: product, quantity: quantity)
         return true
     }
-    
+
     func finalizeOrder(order: Order) {
         for product in order.products {
             if let storedProduct = store.getProduct(productId: product.id) {
@@ -97,16 +104,16 @@ class InventoryViewModel {
     }
     
     func updateOrderQuantity(for productId: UUID, newQuantity: Int) {
-        guard let _ = store.getProduct(productId: productId) else { return }
+        guard store.getProduct(productId: productId) != nil else { return }
         store.updateOrder(productId: productId, newQuantity: newQuantity)
         updateCurrentOrder()
     }
-    
+
     func removeProductFromOrder(productId: UUID) {
         store.removeFromOrder(productId: productId)
         updateCurrentOrder()
     }
-    
+
     private func updateCurrentOrder() {
         currentOrder = store.getCurrentOrder()
     }
@@ -117,9 +124,28 @@ class InventoryViewModel {
         }
         return total
     }
-    
+
     func clearCurrentOrder() {
         currentOrder = []
     }
-    
+
+    func sortProductsAlphabeticallyAsc() {
+        sortedProducts = store.getAllProducts().sorted {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+        }
+    }
+
+    func sortProductsAlphabeticallyDesc() {
+        sortedProducts = store.getAllProducts().sorted {
+            $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending
+        }
+    }
+
+    func sortProductsByPriceAsc() {
+        sortedProducts = store.getAllProducts().sorted { $0.price < $1.price }
+    }
+
+    func sortProductsByPriceDesc() {
+        sortedProducts = store.getAllProducts().sorted { $0.price > $1.price }
+    }
 }

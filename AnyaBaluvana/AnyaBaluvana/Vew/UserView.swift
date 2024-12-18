@@ -38,7 +38,6 @@ final class UserCell: UITableViewCell {
         return button
     }()
 
-
     private let menuTableView: UITableView = {
         let tableView = UITableView()
         tableView.isScrollEnabled = false
@@ -111,7 +110,6 @@ final class UserCell: UITableViewCell {
     private func setupView() {
         backgroundColor = .white
         
-
         contentView.addSubview(topContainer)
         topContainer.addSubview(imagePlaceHolder)
         topContainer.addSubview(nameLabel)
@@ -131,7 +129,6 @@ final class UserCell: UITableViewCell {
         
         bottomContainer.addTarget(self, action: #selector(becomeCourierTapped), for: .touchUpInside)
     }
-
 
     private func setupLayout() {
         topContainer.snp.makeConstraints {
@@ -191,7 +188,6 @@ final class UserCell: UITableViewCell {
             $0.width.height.equalTo(60)
         }
     }
-
 
     var onEditPhoneTapped: (() -> Void)?
 
